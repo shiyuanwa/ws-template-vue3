@@ -25,6 +25,7 @@
     "mock/**/*.ts",
     "types/**/*.d.ts",
     "types/**/*.ts",
+    "vite/**/*.ts",
     "vite.config.ts"
   ]
 }
