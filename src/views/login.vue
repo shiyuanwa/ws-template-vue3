@@ -35,12 +35,12 @@ import { env } from '@/utils/helper';
               <div class="mt-6">
                 <button
                   class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-                  Sign in
+                  登陆
                 </button>
               </div>
             </form>
-            <p class="mt-6 text-sm text-center text-gray-400">Don&#x27;t have an account yet? <a href="#"
-                class="text-blue-500 focus:outline-none focus:underline hover:underline">Sign up</a>.</p>
+            <p class="mt-6 text-sm text-center text-gray-400">还没有账户? <a href="#"
+                class="text-blue-500 focus:outline-none focus:underline hover:underline">点击注册</a></p>
           </div>
         </div>
       </div>
