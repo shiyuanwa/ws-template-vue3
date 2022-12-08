@@ -1,4 +1,3 @@
-import vue from '@vitejs/plugin-vue'
 import { ConfigEnv, loadEnv } from 'vite'
 import alias from './config/alias'
 import server from './config/server'

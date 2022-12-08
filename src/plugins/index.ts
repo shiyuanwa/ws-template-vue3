@@ -6,3 +6,5 @@ export default async function setupPlaugins(app: App) {
   setupRouterPlugin(app)
   setupTailWindCssPlugin()
 }
+
+
