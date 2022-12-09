@@ -1,16 +1,16 @@
+import { Random } from 'mockjs'
 import { MockMethod } from 'vite-plugin-mock'
 
 export default [
   {
     url: '/api/login',
-    method: 'get',
+    method: 'post',
     response: () => {
       return {
-        code: 0,
+        code: 200,
         message: 'success',
         data: {
-          token: 'vben',
-          name: '前段脚手架',
+          token: Random.string(18),
         },
       }
     },

@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  meger/asdasdasd
+  admin/home.vue
 </template>
 
 <style scoped lang='less'>

@@ -1,10 +1,24 @@
 <script setup lang='ts'>
-import { env } from '@/utils/helper';
 import { reactive } from 'vue';
+import { login as onlogin } from '@/api/login';
+import loacl from '@/utils/local';
+import { env } from '@/utils/helper';
+import { useRouter } from 'vue-router'
 const form = reactive({
   user: '',
   password: ''
 })
+const router = useRouter()
+const login = async (values: any) => {
+  let { data: { token } } = await onlogin(values)
+  loacl.set('token',
+    {
+      time: env.VITE_EXPIRE_TIME,
+      token
+    }
+  )
+  router.push({ name: 'home' })
+}
 </script>
 
 <template>
@@ -31,7 +45,7 @@ const form = reactive({
               <ws-input v-model="form.password" type="password" placeholder="请输入密码" />
             </div>
             <div class="mt-6">
-              <button
+              <button @click="login(form)"
                 class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
                 登陆
               </button>

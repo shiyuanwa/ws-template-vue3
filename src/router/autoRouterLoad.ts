@@ -1,4 +1,3 @@
-import { router } from './index';
 import { RouteRecordRaw } from 'vue-router'
 
 const layouts = import.meta.glob('../layouts/*.vue', { eager: true })
@@ -12,7 +11,6 @@ function getRoutes() {
     layoutRoutes.push(routes)
   })
 
-  console.log(layoutRoutes)
   return layoutRoutes
 }
 
@@ -24,7 +22,6 @@ function getLatoutRoutes(file: string, module: { [key: string]: any }) {
     component: module.default,
   } as RouteRecordRaw
 
-  
   return Object.assign(route, module.default?.route)
 }
 

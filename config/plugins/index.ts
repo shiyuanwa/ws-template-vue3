@@ -7,5 +7,6 @@ export function setupPlugins(isBuild: boolean, env: ENV_VITE) {
   const plugins: Plugin[] = [vue()]
   plugins.push(setupMockPlugin(isBuild))
   plugins.push(setupVitePluginHtml(isBuild, env))
+
   return plugins
 }

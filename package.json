@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@icon-park/vue-next": "^1.4.2",
     "axios": "^1.2.0",
     "lodash": "^4.17.21",
     "mockjs": "^1.1.0",
