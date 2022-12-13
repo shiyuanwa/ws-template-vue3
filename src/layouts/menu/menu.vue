@@ -1,37 +1,24 @@
 <script setup lang="ts">
-import { computed, nextTick, reactive, ref } from 'vue'
+import { computed, reactive } from 'vue'
 import menuItem from './menu-item.vue'
-const props = withDefaults(defineProps<{ data: menu[] }>(), {
-  data: () => [],
+const props = withDefaults(defineProps<{ data: menu }>(), {
+  data: function () {
+    return {} as menu
+  },
 })
-const getMenuItem = computed(() => (c: menuItem[] | undefined) => c || [])
 const data = reactive(props.data)
-let active = ref(false)
-const menuActive = (i: number) => {
-  active.value = !active.value
-  data.map((item, index) => {
-    if (index !== i) {
-      data[index].active = false
-      return
-    }
-  })
-  data[i].active = !data[i]?.active
-}
-// const menuItem = computed(() => {
-//   console.log(ref('aaa'))
-//   return 0
-// })
+const getMenuItem = computed(() => (c: menu[] | undefined) => c || [])
 </script>
 
 <template>
-  <div v-for="(menu, i) of data" class="transition-[height] duration-300">
-    <div class="ws-menu rotate" tabindex="0" :class="{ active: menu.active }" @click="menuActive(i)">
+  <div class="transition-[height] duration-300">
+    <div class="ws-menu rotate" tabindex="0" :class="{ active: data.active }" @click="data.active = !data.active">
       <i-inbox />
-      <p>{{ menu.title }}</p>
-      <i-right class="rotate" :class="{ 'rotate-90': menu.active }" />
+      <p>{{ data.title }}</p>
+      <i-right class="rotate" :class="{ 'rotate-90': data.active }" />
     </div>
-    <ws-transition :active="menu.active">
-      <menu-item :data="getMenuItem(menu.chidren)" />
+    <ws-transition :active="data.active">
+      <menu-item :data="menuItem" v-for="menuItem of getMenuItem(data.chidren)" />
     </ws-transition>
   </div>
 </template>

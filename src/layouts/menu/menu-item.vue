@@ -1,31 +1,24 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import wsMenu from './menu.vue'
 
-const props = withDefaults(defineProps<{ data: menu[] }>(), {
-  data: () => [],
+const props = withDefaults(defineProps<{ data: menu }>(), {
+  data: () => ({} as menu),
 })
 const data = reactive(props.data)
-
-const menuItemActive = (i: number) => {
-  data.map((item, index) => {
-    if (index !== i) {
-      item.active = false
-      return
-    }
-  })
-  data[i].active = !data[i]?.active
-}
+const getMenu = computed(() => (c: menu[] | undefined) => c || [])
 </script>
 
 <template>
   <div>
-    <div v-for="(menu, i) of data">
-      <ws-menu v-if="menu?.icon" :data="menu.chidren" />
-      <div class="ws-menu-item" v-else :class="{ active: menu.active }" @click="menuItemActive(i)">
-        <i-round class="scale-[.7]" />
-        <p>{{ menu.title }}</p>
+    <div v-if="data?.icon">
+      <div v-for="(menu, i) of getMenu(data.chidren)">
+        <ws-menu :data="menu" />
       </div>
+    </div>
+    <div class="ws-menu-item" v-else :class="{ active: data.active }" @click="data.active = !data.active">
+      <i-round class="scale-[.7]" />
+      <p>{{ data.title }}</p>
     </div>
   </div>
 </template>
