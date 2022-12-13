@@ -1,22 +1,22 @@
-<script setup lang='ts'>
-import { reactive } from 'vue';
-import { login as onlogin } from '@/api/login';
-import loacl from '@/utils/local';
-import { env } from '@/utils/helper';
+<script setup lang="ts">
+import { reactive } from 'vue'
+import { login as onlogin } from '@/api/login'
+import loacl from '@/utils/local'
+import { env } from '@/utils/helper'
 import { useRouter } from 'vue-router'
 const form = reactive({
   user: '',
-  password: ''
+  password: '',
 })
 const router = useRouter()
 const login = async (values: any) => {
-  let { data: { token } } = await onlogin(values)
-  loacl.set('token',
-    {
-      time: env.VITE_EXPIRE_TIME,
-      token
-    }
-  )
+  let {
+    data: { token },
+  } = await onlogin(values)
+  loacl.set('token', {
+    time: env.VITE_EXPIRE_TIME,
+    token,
+  })
   router.push({ name: 'home' })
 }
 </script>
@@ -39,19 +39,23 @@ const login = async (values: any) => {
             <div class="mt-6">
               <div class="flex justify-between mb-2">
                 <label for="password" class="text-sm text-gray-600 dark:text-gray-200">密码</label>
-                <a href="#"
-                  class="text-sm text-gray-400 focus:text-blue-500 hover:text-blue-500 hover:underline">忘记密码？</a>
+                <a href="#" class="text-sm text-gray-400 focus:text-blue-500 hover:text-blue-500 hover:underline"
+                  >忘记密码？</a
+                >
               </div>
               <ws-input v-model="form.password" type="password" placeholder="请输入密码" />
             </div>
             <div class="mt-6">
-              <button @click="login(form)"
+              <button
+                @click="login(form)"
                 class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
                 登陆
               </button>
             </div>
-            <p class="mt-6 text-sm text-center text-gray-400">还没有账户? <a href="#"
-                class="text-blue-500 focus:outline-none focus:underline hover:underline">点击注册</a></p>
+            <p class="mt-6 text-sm text-center text-gray-400">
+              还没有账户?
+              <a href="#" class="text-blue-500 focus:outline-none focus:underline hover:underline">点击注册</a>
+            </p>
           </div>
         </div>
       </div>
@@ -59,7 +63,7 @@ const login = async (values: any) => {
   </div>
 </template>
 
-<style scoped >
+<style scoped>
 .img {
   background-image: url('../assets/img/bg-login.png');
 }

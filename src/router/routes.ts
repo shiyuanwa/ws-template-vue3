@@ -7,7 +7,7 @@ const routes = [
     component: () => import('@/views/login.vue'),
   },
   {
-    path: '/404',
+    path: '/:any(.*)',
     name: '404',
     component: () => import('@/views/error/404.vue'),
   },
