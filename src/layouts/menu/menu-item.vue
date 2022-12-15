@@ -1,48 +1,80 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
-import wsMenu from './menu.vue'
-
-const props = withDefaults(defineProps<{ data: menu }>(), {
-  data: () => ({} as menu),
+import { nextTick, ref } from 'vue'
+import wMenuItem from './Menu-item.vue'
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true,
+  },
 })
-const data = reactive(props.data)
-const getMenu = computed(() => (c: menu[] | undefined) => c || [])
+let active = ref(false)
+let activeChildren = ref(false)
+let container = ref<HTMLDivElement | null>(null)
+let MenuItemHeight = ref('0px')
+
+const toggleMenu = () => {
+  active.value = !active.value
+  if (!activeChildren.value) {
+    activeChildren.value = true
+    nextTick(() => {
+      MenuItemHeight.value = `${container.value?.scrollHeight || 0}px`
+      setTimeout(() => {
+        MenuItemHeight.value = 'fit-content'
+        container.value && (container.value.style.overflow = 'visible')
+      }, 300)
+    })
+  } else {
+    MenuItemHeight.value = `${container.value?.scrollHeight || 0}px`
+    container.value && (container.value.style.overflow = 'hidden')
+    setTimeout(() => {
+      MenuItemHeight.value = `0px`
+    }, 0)
+    setTimeout(() => {
+      activeChildren.value = false
+    }, 300)
+  }
+}
 </script>
 
 <template>
-  <div>
-    <div v-if="data?.icon">
-      <div v-for="(menu, i) of getMenu(data.chidren)">
-        <ws-menu :data="menu" />
+  <div class="menu-item" @click="toggleMenu">
+    <div class="label">
+      <div class="left">
+        <i>
+          <component v-if="props.data.icon" :is="props.data.icon" />
+        </i>
+        <span>{{ props.data.title }}</span>
+      </div>
+      <div class="right expand">
+        <i :class="{ 'rotate-90': active }"><i-right /></i>
       </div>
     </div>
-    <div class="ws-menu-item" v-else :class="{ active: data.active }" @click="data.active = !data.active">
-      <i-round class="scale-[.7]" />
-      <p>{{ data.title }}</p>
-    </div>
+  </div>
+  <div class="items-container transition-[height] duration-300" :style="{ height: MenuItemHeight }" ref="container">
+    <w-menu-item v-if="activeChildren" v-for="(item, index) of props.data.children" :key="index" :data="item" />
   </div>
 </template>
 
 <style scoped lang="less">
-.ws-menu-item {
-  @apply cursor-pointer flex items-center px-4 mr-4 mt-2 h-10 relative overflow-hidden hover:bg-gray-200 rounded-r-3xl;
-  &::after {
-    content: '';
-    @apply absolute inset-0 opacity-0;
-    background-image: radial-gradient(circle, #ccc 10%, transparent 10.1%);
-    transform: scale(10);
-    transition: all 1s;
-  }
-  &:active::after {
-    @apply opacity-50;
-    transform: scale(0);
-    transition: 0s;
-  }
-  p {
-    @apply whitespace-nowrap overflow-hidden text-ellipsis ml-4 flex-1;
+.menu-item {
+  @apply relative w-full;
+  .label {
+    @apply flex flex-row items-center justify-between select-none whitespace-nowrap box-border h-12 py-5 transition duration-300;
+    > div {
+      @apply flex flex-row items-center gap-2;
+      i {
+        @apply text-lg transition duration-300;
+        &.expand {
+          @apply text-sm;
+        }
+      }
+    }
+    &:hover {
+      @apply bg-slate-500 cursor-pointer;
+    }
   }
 }
-.active {
-  @apply bg-gradient-to-r from-blue-300 to-blue-700 rounded-r-3xl text-white;
+.items-container {
+  @apply w-full overflow-hidden;
 }
 </style>

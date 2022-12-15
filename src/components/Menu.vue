@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import wMenuItem from './Menu-item.vue'
+import wMenuItem from '../layouts/menu/Menu-item.vue'
 
 let menuTree = ref([
   { title: 'L1', icon: 'i-bill', children: [{ title: 'L1-1' }, { title: 'L1-3' }] },

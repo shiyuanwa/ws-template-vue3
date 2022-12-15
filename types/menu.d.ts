@@ -1,8 +1,7 @@
-interface menuItem {
+interface menu {
   title: string
+  name: string
   icon?: string
   active?: boolean
-}
-interface menu extends menuItem {
-  chidren?: menuItem[]
+  chidren: menu[]
 }
