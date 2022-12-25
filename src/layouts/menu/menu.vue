@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import wMenuItem from './Menu-item.vue'
+import menu from './menu'
 
-let menuTree = ref([
-  { title: 'L1', icon: 'i-bill', children: [{ title: 'L1-1' }, { title: 'L1-3' }] },
-  { title: 'L2', icon: 'i-bill', children: [{ title: 'L2-1' }] },
-])
+let menuTree = menu.menu
+let state = ref(true)
 </script>
 
 <template>
-  <div class="fixed h-screen w-60 left-0 right-0 transition-all overflow-auto;">
-    <w-menu-item v-for="(menu, index) of menuTree" :key="index" :data="menu" />
+  <div class="h-screen transition-[width]" :class="[state ? 'w-60' : 'w-14']">
+    <w-menu-item :data="menuTree" />
   </div>
 </template>
 

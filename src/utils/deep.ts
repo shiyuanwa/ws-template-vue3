@@ -1,16 +1,13 @@
 class Deep {
-  public target = []
-  constructor(target: []) {
-    this.target = target
-  }
-  private searchIndex() {}
-
-  find(r: string) {
-    for (let i = 0; i < this.length; i++) {
-      const element = array[i];
-      
+  loop(target: any[], callback: Function, leave?: string) {
+    for (let i = 0; i < target.length; i++) {
+      let atLoop = target[i]
+      let leaves = leave ? `${leave}-${i + 1}` : `${i + 1}`
+      let ifLoop = callback(atLoop, leaves)
+      if (ifLoop) this.loop(ifLoop, callback, leaves)
     }
+    return target
   }
 }
 
-export default Deep
+export default new Deep()

@@ -17,15 +17,15 @@ export default {
 </script>
 <template>
   <div class="flex h-screen bg-zinc-100">
-    <div class="flex-none w-[260px] overflow-x-hidden">
-      <!-- title -->
-      <!-- <div class="flex items-center justify-start min-h-[64px] pl-4">
+    <!-- <div class="flex-none w-[260px] overflow-x-hidden"> -->
+    <!-- title -->
+    <!-- <div class="flex items-center justify-start min-h-[64px] pl-4">
         <i-github class="text-2xl" />
         <p class="text-xl ml-2" @click="fold = !fold">{{ title }}</p>
       </div> -->
-      <!-- menu -->
-      <ws-menu />
-    </div>
+    <!-- menu -->
+    <ws-menu />
+    <!-- </div> -->
     <div class="flex-grow min-h-screen min-w-0 flex flex-col">
       <header>header</header>
       <div>

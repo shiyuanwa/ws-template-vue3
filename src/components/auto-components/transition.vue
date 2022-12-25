@@ -5,17 +5,19 @@ const props = withDefaults(defineProps<{ active: boolean }>(), {
 })
 const on = {
   beforeEnter(el: RendererElement) {
-    if (!el.dataset) el.dataset = {}
+    console.log('beforeEnter')
 
+    if (!el.dataset) el.dataset = {}
     el.dataset.oldPaddingTop = el.style.paddingTop
     el.dataset.oldPaddingBottom = el.style.paddingBottom
-
     el.style.maxHeight = 0
     el.style.paddingTop = 0
     el.style.paddingBottom = 0
   },
 
   enter(el: RendererElement) {
+    console.log('enter')
+
     el.dataset.oldOverflow = el.style.overflow
     if (el.scrollHeight !== 0) {
       el.style.maxHeight = `${el.scrollHeight}px`
@@ -31,11 +33,15 @@ const on = {
   },
 
   afterEnter(el: RendererElement) {
+    console.log('afterEnter')
+
     el.style.maxHeight = ''
     el.style.overflow = el.dataset.oldOverflow
   },
 
   beforeLeave(el: RendererElement) {
+    console.log('beforeLeave', el.scrollHeight)
+
     if (!el.dataset) el.dataset = {}
     el.dataset.oldPaddingTop = el.style.paddingTop
     el.dataset.oldPaddingBottom = el.style.paddingBottom
@@ -46,6 +52,8 @@ const on = {
   },
 
   leave(el: RendererElement) {
+    console.log('leave', el.scrollHeight)
+
     if (el.scrollHeight !== 0) {
       el.style.maxHeight = 0
       el.style.paddingTop = 0
@@ -54,6 +62,8 @@ const on = {
   },
 
   afterLeave(el: RendererElement) {
+    console.log('afterLeave', el.scrollHeight)
+
     el.style.maxHeight = ''
     el.style.overflow = el.dataset.oldOverflow
     el.style.paddingTop = el.dataset.oldPaddingTop
@@ -64,9 +74,7 @@ const on = {
 
 <template>
   <transition appear v-on="on" mode="in-out">
-    <div v-show="props.active" class="transition-[max-height] duration-300">
-      <slot />
-    </div>
+    <slot />
   </transition>
 </template>
 

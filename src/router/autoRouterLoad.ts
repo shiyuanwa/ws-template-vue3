@@ -1,13 +1,19 @@
 import { RouteRecordRaw } from 'vue-router'
-
+import layout from '@/layouts/layout.vue'
 const layouts = import.meta.glob('../layouts/*.vue', { eager: true })
+// const layouts = import.meta.glob('../layouts/*.vue', { eager: true })
 
 function getRoutes() {
   const layoutRoutes = [] as RouteRecordRaw[]
 
   Object.entries(layouts).forEach(([file, module]) => {
-    const routes = getLatoutRoutes(file, module as { [key: string]: any })
+    const routes = {
+      name: 'layout',
+      path: '/',
+      component: layout,
+    } as RouteRecordRaw
     routes.children = getChildrenRoutes(routes)
+
     layoutRoutes.push(routes)
   })
 

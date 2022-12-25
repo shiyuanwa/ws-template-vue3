@@ -1,7 +1,9 @@
 interface menu {
+  leave: string
   title: string
   name: string
   icon?: string
   active?: boolean
-  chidren: menu[]
+  open?: boolean
+  children: menu[]
 }
