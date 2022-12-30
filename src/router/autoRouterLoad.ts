@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from 'vue-router'
-import layout from '@/layouts/layout.vue'
+import layout from '@/layouts/index.vue'
 
 function getRoutes() {
   const layoutRoute = [] as RouteRecordRaw[]
