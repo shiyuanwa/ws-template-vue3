@@ -1,7 +1,7 @@
 import loacl from '@/utils/local'
 import { RouteLocationNormalized, Router } from 'vue-router'
 class Guard {
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   public run() {
     this.router.beforeEach((to, from) => {
@@ -12,8 +12,7 @@ class Guard {
   }
 
   private isRouteCheck(route: RouteLocationNormalized, token: any) {
-    console.log(route)
-
+    
     return !!(!route.meta.auto || (route.meta.auto && token))
   }
 }

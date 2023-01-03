@@ -1,12 +1,5 @@
 <script  lang='ts' setup>
-import { ref, onMounted, provide } from 'vue';
-
-
-const menu = ref(null)
-
-provide('MenuInstance', menu.value)
-
-
+import { ref, provide } from 'vue';
 const props = defineProps({
     activeName: {
         type: [String, Number]
@@ -18,6 +11,14 @@ const props = defineProps({
         }
     },
 })
+
+const menu = ref(null)
+
+const MenuInstance = () => {
+    console.log('触发父组件-MenuInstance');
+}
+
+provide('MenuInstance', MenuInstance)
 
 </script>
 
