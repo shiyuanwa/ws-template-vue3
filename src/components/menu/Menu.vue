@@ -26,7 +26,7 @@ const props = defineProps({
 
 let { submenuList, menuItemList } = useMenu(props)
 const currentActiveName = ref(props.activeName)
-let currentOpenNames = reactive([...props.openNames])
+let currentOpenNames = ref([...props.openNames])
 
 provide<MenuInstance>('MenuInstance', {
     addSubItem: (s) => {
@@ -36,8 +36,8 @@ provide<MenuInstance>('MenuInstance', {
         menuItemList.push(m)
     },
     handleSubMenuSelect: (parentName) => {
-        currentOpenNames = [...parentName]
-        console.log(currentOpenNames);
+        console.log(parentName);
+        currentOpenNames.value = [...parentName]
     },
     handleMenuItemSelect: (name) => {
         currentActiveName.value = name
@@ -46,7 +46,7 @@ provide<MenuInstance>('MenuInstance', {
 
 const updateOpened = () => {
     submenuList.map(item => item).forEach(item => {
-        let opened = currentOpenNames.includes(item.name)
+        let opened = currentOpenNames.value.includes(item.name)
         item.handleClick(opened);
     });
 }
@@ -55,16 +55,14 @@ const updateActived = (menuItemName: string) => menuItemList.forEach(item => ite
 
 watch(currentActiveName, (c, o) => {
     // props.openNames && updateOpened()
-    console.log(c);
-
     updateActived(c)
     updateOpened()
 }, { deep: true })
 
-watch(() => [...currentOpenNames], (c, o) => {
+watch(currentOpenNames, (c, o) => {
     console.log(c, 'console.log(parentName);');
     // props.openNames && updateOpened()
-    // updateOpened()
+    updateOpened()
 }, { deep: true })
 
 onMounted(async () => {

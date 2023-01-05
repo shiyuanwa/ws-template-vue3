@@ -30,20 +30,19 @@ const handleClick = (state: boolean) => {
 const handleClickItem = () => {
     let parent = instance?.parent
     const parents: string[] = []
-    console.log('parents', parents, parent);
-    // while (parent) {
-    //     if (parent.type.name === 'Menu') {
-    //         parents.push(parent.props.name as string)
-    //         return false
-    //     } else if (parent.type.name === 'SubMenu') {
-    //         parents.push(parent.props.name as string)
-    //         parent = parent?.parent
-    //     }
+    while (parent) {
+        if (parent.type.name === '') {
+            parents.push(parent.props.name as string)
 
-    //     parent = parent?.parent
-    // }
+            return false
+        } else if (parent.type.name === 'SubMenu') {
+            parents.push(parent.props.name as string)
+            parent = parent?.parent
+        }
+
+        parent = parent?.parent
+    }
     if (MenuInstance) MenuInstance.handleSubMenuSelect([props.name, ...parents])
-
 }
 
 const getStyle = computed(() => opened.value ? 'transition-transform duration-300 transform rotate-90' : 'transition-transform duration-300 transform')
