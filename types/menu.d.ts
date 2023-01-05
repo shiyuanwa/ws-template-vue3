@@ -1,21 +1,18 @@
-interface menu {
-  leave: string
-  title: string
+interface SubMenu {
   name: string
+  title: string
   icon?: string
   active?: boolean
   open?: boolean
-  children: menu[]
 }
-
+interface MenuList {
+  name: string,
+  parent?: string,
+  handleClick: (click: boolean | string) => void
+}
 interface MenuInstance {
-  addSubItem: (sub: any) => void;
-  addMenuItem: (menuItem: any) => void;
-  handleSubMenuSelect: (name: string) => void;
-  handleMenuItemSelect: (name: string) => void;
-}
-interface SubMenuInstance {
-  // addSubItem: (sub: any) => void;
-  // addMenuItem: (menuItem: any) => void;
+  addSubItem: (s: any) => void;
+  addMenuItem: (m: any) => void;
+  handleSubMenuSelect: (parents: string[]) => void;
   handleMenuItemSelect: (name: string) => void;
 }

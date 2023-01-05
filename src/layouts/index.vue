@@ -8,7 +8,7 @@ const title = env.VITE_APP_TITLE
 </script>
 
 <template>
-    <Menu active-name="1-2" :open-names="['1']">
+    <Menu active-name="1-1" :open-names="['1']">
         <Submenu name="1">
             <template #title>
                 Navigation One

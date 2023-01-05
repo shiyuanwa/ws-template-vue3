@@ -1,8 +1,16 @@
+<script lang='ts' >
+export default {
+    name: 'Menu'
+}
+</script>
 <script  lang='ts' setup>
-import { ref, provide, nextTick, watch, onMounted, reactive } from 'vue';
+import { ref, reactive, provide, nextTick, watch, onMounted } from 'vue';
+import useMenu from './useMenu';
+
 const props = defineProps({
     activeName: {
-        type: [String, Number]
+        type: String,
+        required: true,
     },
     openNames: {
         type: Array,
@@ -16,63 +24,58 @@ const props = defineProps({
     }
 })
 
-const submenuList = reactive([])
-const menuItemList = reactive([])
-
+let { submenuList, menuItemList } = useMenu(props)
 const currentActiveName = ref(props.activeName)
 let currentOpenNames = reactive([...props.openNames])
 
-const addSubItem = (sub: any) => {
-    submenuList.push(sub)
-}
-
-const addMenuItem = (menuItem: any) => {
-    menuItemList.push(menuItem)
-}
-
-const handleSubMenuSelect = (name: string) => {
-    currentOpenNames.push(name)
-}
-
-const handleMenuItemSelect = (name: string, parentName: string[]) => {
-    currentOpenNames = parentName
-    currentActiveName.value = name
-}
-
-const MenuInstance = {
-    addSubItem,
-    addMenuItem,
-    handleSubMenuSelect,
-    handleMenuItemSelect,
-} as MenuInstance
+provide<MenuInstance>('MenuInstance', {
+    addSubItem: (s) => {
+        submenuList.push(s)
+    },
+    addMenuItem: (m) => {
+        menuItemList.push(m)
+    },
+    handleSubMenuSelect: (parentName) => {
+        currentOpenNames = [...parentName]
+        console.log(currentOpenNames);
+    },
+    handleMenuItemSelect: (name) => {
+        currentActiveName.value = name
+    },
+})
 
 const updateOpened = () => {
-    const items = submenuList.map(item => item);
-    items.forEach(item => {
+    submenuList.map(item => item).forEach(item => {
         let opened = currentOpenNames.includes(item.name)
         item.handleClick(opened);
     });
 }
 
-const updateActived = (name) => menuItemList.forEach(item => item.handleUpdataActive(name));
+const updateActived = (menuItemName: string) => menuItemList.forEach(item => item.handleClick(menuItemName));
 
 watch(currentActiveName, (c, o) => {
-    props.openNames && updateOpened()
+    // props.openNames && updateOpened()
+    console.log(c);
+
     updateActived(c)
+    updateOpened()
 }, { deep: true })
 
-provide('MenuInstance', MenuInstance)
+watch(() => [...currentOpenNames], (c, o) => {
+    console.log(c, 'console.log(parentName);');
+    // props.openNames && updateOpened()
+    // updateOpened()
+}, { deep: true })
 
 onMounted(async () => {
     updateOpened()
     await nextTick()
     updateActived(currentActiveName.value)
 })
-
 </script>
 
 <template>
-    <ul ref="menu">
+    <ul>
         <slot></slot>
     </ul>
 </template>

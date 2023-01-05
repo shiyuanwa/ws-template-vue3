@@ -1,6 +1,13 @@
-<script  lang='ts' setup>
-import { getCurrentInstance, provide, inject, ref, computed, onMounted } from "vue";
+<script lang='ts' >
+export default {
+    name: 'SubMenu'
+}
+</script>
+
+<script lang='ts' setup>
+import { computed, onMounted } from "vue";
 import collapseTransition from "@/components/collapse-transition.vue";
+import useMenu from "./useMenu";
 const props = defineProps({
     icon: {
         type: String,
@@ -10,38 +17,46 @@ const props = defineProps({
         }
     },
     name: {
-        type: String,
         required: true,
+        type: String,
     },
 })
-let opened = ref(false)
-const MenuInstance = inject<MenuInstance | null>('MenuInstance')
 
-let instance = getCurrentInstance()
-
-const handleMenuItemSelect = (name: string, parentName: string[]) => {
-    MenuInstance?.handleMenuItemSelect(name, parentName)
-}
-
-const SubMenuInstance = {
-    handleMenuItemSelect,
-} as SubMenuInstance
-
-provide('SubMenuInstance', SubMenuInstance)
+let { opened, MenuInstance, instance } = useMenu(props)
 
 const handleClick = (state: boolean) => {
     opened.value = state
+}
+const handleClickItem = () => {
+    let parent = instance?.parent
+    const parents: string[] = []
+    console.log('parents', parents, parent);
+    // while (parent) {
+    //     if (parent.type.name === 'Menu') {
+    //         parents.push(parent.props.name as string)
+    //         return false
+    //     } else if (parent.type.name === 'SubMenu') {
+    //         parents.push(parent.props.name as string)
+    //         parent = parent?.parent
+    //     }
+
+    //     parent = parent?.parent
+    // }
+    if (MenuInstance) MenuInstance.handleSubMenuSelect([props.name, ...parents])
+
 }
 
 const getStyle = computed(() => opened.value ? 'transition-transform duration-300 transform rotate-90' : 'transition-transform duration-300 transform')
 const leftIcon = computed(() => props.icon ? props.icon : 'i-round')
 
+
 onMounted(() => MenuInstance?.addSubItem({ name: props.name, handleClick }))
 </script>
 
+
 <template>
     <li>
-        <div class="sub-menu" ref="reference" @click.stop="handleClick(!opened)">
+        <div class="sub-menu" @click.stop="handleClickItem">
             <i :class="leftIcon === 'i-round' && 'scale-[70%]'">
                 <component :is="leftIcon" />
             </i>
