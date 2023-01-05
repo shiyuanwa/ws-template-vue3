@@ -1,8 +1,8 @@
 <script  lang='ts' setup>
 import { env } from '@/utils/helper'
-import Menu from '@/components/menu/menu.vue'
-import Submenu from '@/components/menu/sub-menu.vue'
-import MenuItem from '@/components/menu/menu-item.vue';
+import Menu from '@/components/menu/Menu.vue'
+import Submenu from '@/components/menu/Sub-Menu.vue'
+import MenuItem from '@/components/menu/Menu-Item.vue';
 const title = env.VITE_APP_TITLE
 
 </script>

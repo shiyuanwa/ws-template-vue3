@@ -1,43 +1,38 @@
 <script  lang='ts' setup>
-import { getCurrentInstance, inject, ref, onMounted } from "vue";
+import { onMounted } from "vue";
+import useMenu from "./useMenu";
 const props = defineProps({
     name: {
         type: String,
         required: true,
     },
 })
-const active = ref(false)
-const SubMenuInstance = inject<SubMenuInstance | null>('SubMenuInstance', null)
-const MenuInstance = inject<MenuInstance | null>('MenuInstance', null)
-const instance = getCurrentInstance()
-const handleClickItem = () => {
-    let parent = instance?.parent
-    const parents = []
-    while (parent) {
-        if (parent?.type.__name === 'menu') {
-            parents.push(parent.props.name as string)
-            return false
-        } else if (parent?.type.__name === 'sub-menu') {
-            parents.push(parent.props.name as string)
-            parent = parent?.parent
-        }
-        parent = parent?.parent
-    }
 
-    if (SubMenuInstance) {
-        SubMenuInstance.handleMenuItemSelect(props.name, parents)
-        return
-    }
-
-    MenuInstance && MenuInstance.handleMenuItemSelect(props.name, parents)
-}
+const { active, MenuInstance, instance } = useMenu(props)
 
 const handleUpdataActive = (name: string) => {
     active.value = props.name === name
 }
+const handleClickItem = () => {
+    let parent = instance?.parent
+    const parents: string[] = []
+    while (parent) {
+        if (parent.type.name === 'Menu') {
+            parents.push(parent.props.name as string)
+            return false
+        } else if (parent.type.name === 'SubMenu') {
+            parents.push(parent.props.name as string)
+            parent = parent?.parent
+        }
 
-onMounted(() => MenuInstance?.addMenuItem({ name: props.name, handleUpdataActive }))
-
+        parent = parent?.parent
+    }
+    if (MenuInstance) {
+        MenuInstance.handleMenuItemSelect(props.name)
+        MenuInstance.handleSubMenuSelect(parents)
+    }
+}
+onMounted(() => MenuInstance?.addMenuItem({ name: props.name, handleClick: handleUpdataActive }))
 </script>
 
 <template>
@@ -46,7 +41,6 @@ onMounted(() => MenuInstance?.addMenuItem({ name: props.name, handleUpdataActive
             <i-round />
         </i>
         <slot></slot>
-        <p>{{ active }}</p>
     </li>
 </template>
 

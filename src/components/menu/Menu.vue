@@ -1,5 +1,5 @@
 <script  lang='ts' setup>
-import { ref, provide, watchEffect, nextTick, watch, onMounted, reactive } from 'vue';
+import { ref, provide, nextTick, watch, onMounted, reactive } from 'vue';
 const props = defineProps({
     activeName: {
         type: [String, Number]
@@ -29,9 +29,11 @@ const addSubItem = (sub: any) => {
 const addMenuItem = (menuItem: any) => {
     menuItemList.push(menuItem)
 }
+
 const handleSubMenuSelect = (name: string) => {
     currentOpenNames.push(name)
 }
+
 const handleMenuItemSelect = (name: string, parentName: string[]) => {
     currentOpenNames = parentName
     currentActiveName.value = name
