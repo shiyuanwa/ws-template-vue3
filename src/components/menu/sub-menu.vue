@@ -12,15 +12,15 @@ const props = defineProps({
     name: {
         type: String,
         required: true,
-    }
+    },
 })
 let opened = ref(false)
 const MenuInstance = inject<MenuInstance | null>('MenuInstance')
-// const instance = getCurrentInstance();
-// const SubMenuInstance = inject<Function>('SubMenuInstance')
 
-const handleMenuItemSelect = (name: string) => {
-    MenuInstance?.handleMenuItemSelect(name)
+let instance = getCurrentInstance()
+
+const handleMenuItemSelect = (name: string, parentName: string[]) => {
+    MenuInstance?.handleMenuItemSelect(name, parentName)
 }
 
 const SubMenuInstance = {
@@ -29,11 +29,12 @@ const SubMenuInstance = {
 
 provide('SubMenuInstance', SubMenuInstance)
 
-const handleClick = (state: boolean) => opened.value = state;
+const handleClick = (state: boolean) => {
+    opened.value = state
+}
 
 const getStyle = computed(() => opened.value ? 'transition-transform duration-300 transform rotate-90' : 'transition-transform duration-300 transform')
 const leftIcon = computed(() => props.icon ? props.icon : 'i-round')
-
 
 onMounted(() => MenuInstance?.addSubItem({ name: props.name, handleClick }))
 </script>

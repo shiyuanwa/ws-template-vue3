@@ -1,5 +1,5 @@
 <script  lang='ts' setup>
-import { ref, provide, watchEffect, onMounted, reactive } from 'vue';
+import { ref, provide, watchEffect, nextTick, watch, onMounted, reactive } from 'vue';
 const props = defineProps({
     activeName: {
         type: [String, Number]
@@ -10,16 +10,18 @@ const props = defineProps({
             return [];
         }
     },
+    accordion: {
+        type: Boolean,
+        default: true
+    }
 })
+
 const submenuList = reactive([])
 const menuItemList = reactive([])
 
 const currentActiveName = ref(props.activeName)
-const currentOpenNames = reactive([...props.openNames])
+let currentOpenNames = reactive([...props.openNames])
 
-const handleMenuItemSelect = (name: string) => {
-    currentActiveName.value = name
-}
 const addSubItem = (sub: any) => {
     submenuList.push(sub)
 }
@@ -27,10 +29,18 @@ const addSubItem = (sub: any) => {
 const addMenuItem = (menuItem: any) => {
     menuItemList.push(menuItem)
 }
+const handleSubMenuSelect = (name: string) => {
+    currentOpenNames.push(name)
+}
+const handleMenuItemSelect = (name: string, parentName: string[]) => {
+    currentOpenNames = parentName
+    currentActiveName.value = name
+}
 
 const MenuInstance = {
     addSubItem,
     addMenuItem,
+    handleSubMenuSelect,
     handleMenuItemSelect,
 } as MenuInstance
 
@@ -42,14 +52,21 @@ const updateOpened = () => {
     });
 }
 
-watchEffect(() => console.log(currentActiveName.value))
+const updateActived = (name) => menuItemList.forEach(item => item.handleUpdataActive(name));
+
+watch(currentActiveName, (c, o) => {
+    props.openNames && updateOpened()
+    updateActived(c)
+}, { deep: true })
 
 provide('MenuInstance', MenuInstance)
 
-onMounted(() => {
-    console.log('submenuList:', submenuList, menuItemList, currentOpenNames);
+onMounted(async () => {
     updateOpened()
+    await nextTick()
+    updateActived(currentActiveName.value)
 })
+
 </script>
 
 <template>

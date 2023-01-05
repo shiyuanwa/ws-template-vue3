@@ -11,6 +11,7 @@ interface menu {
 interface MenuInstance {
   addSubItem: (sub: any) => void;
   addMenuItem: (menuItem: any) => void;
+  handleSubMenuSelect: (name: string) => void;
   handleMenuItemSelect: (name: string) => void;
 }
 interface SubMenuInstance {
