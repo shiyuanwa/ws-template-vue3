@@ -60,7 +60,3 @@ onMounted(async () => {
         <slot></slot>
     </ul>
 </template>
-
-<style lang='less' scoped>
-
-</style>

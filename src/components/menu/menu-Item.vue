@@ -51,5 +51,5 @@ onMounted(() => MenuInstance?.addMenuItem({ name: props.name, handleClick: handl
 </template>
 
 <style lang='less' scoped>
-@import url(./index.less);
+@import url(./style/menu.less);
 </style>
