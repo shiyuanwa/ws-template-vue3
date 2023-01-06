@@ -4,8 +4,15 @@ export default {
 }
 </script>
 <script  lang='ts' setup>
-import { ref, reactive, provide, nextTick, watch, onMounted } from 'vue';
+import { ref, provide, nextTick, watch, onMounted } from 'vue';
 import useMenu from './useMenu';
+
+provide<MenuInstance>('MenuInstance', {
+    addSubItem: (subMenu) => submenuList.push(subMenu),
+    addMenuItem: (menuItem) => menuItemList.push(menuItem),
+    handleSubMenuSelect: (parentName) => currentOpenNames.value = [...parentName],
+    handleMenuItemSelect: (name) => currentActiveName.value = name,
+})
 
 const props = defineProps({
     activeName: {
@@ -20,29 +27,13 @@ const props = defineProps({
     },
     accordion: {
         type: Boolean,
-        default: true
+        default: false
     }
 })
 
-let { submenuList, menuItemList } = useMenu(props)
+const { submenuList, menuItemList } = useMenu(props)
 const currentActiveName = ref(props.activeName)
-let currentOpenNames = ref([...props.openNames])
-
-provide<MenuInstance>('MenuInstance', {
-    addSubItem: (s) => {
-        submenuList.push(s)
-    },
-    addMenuItem: (m) => {
-        menuItemList.push(m)
-    },
-    handleSubMenuSelect: (parentName) => {
-        console.log(parentName);
-        currentOpenNames.value = [...parentName]
-    },
-    handleMenuItemSelect: (name) => {
-        currentActiveName.value = name
-    },
-})
+const currentOpenNames = ref([...props.openNames])
 
 const updateOpened = () => {
     submenuList.map(item => item).forEach(item => {
@@ -53,17 +44,9 @@ const updateOpened = () => {
 
 const updateActived = (menuItemName: string) => menuItemList.forEach(item => item.handleClick(menuItemName));
 
-watch(currentActiveName, (c, o) => {
-    // props.openNames && updateOpened()
-    updateActived(c)
-    updateOpened()
-}, { deep: true })
+watch(currentActiveName, (c, o) => updateActived(c), { deep: true })
 
-watch(currentOpenNames, (c, o) => {
-    console.log(c, 'console.log(parentName);');
-    // props.openNames && updateOpened()
-    updateOpened()
-}, { deep: true })
+watch(currentOpenNames, (c, o) => updateOpened(), { deep: true })
 
 onMounted(async () => {
     updateOpened()

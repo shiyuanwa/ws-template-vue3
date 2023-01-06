@@ -1,5 +1,5 @@
 <script  lang='ts' setup>
-import { onMounted } from "vue";
+import { onMounted, inject } from "vue";
 import useMenu from "./useMenu";
 const props = defineProps({
     name: {
@@ -8,11 +8,13 @@ const props = defineProps({
     },
 })
 
-const { active, MenuInstance, instance } = useMenu(props)
+const { active, instance } = useMenu(props)
+const MenuInstance = inject<MenuInstance | null>('MenuInstance')
 
 const handleUpdataActive = (name: string) => {
     active.value = props.name === name
 }
+
 const handleClickItem = () => {
     let parent = instance?.parent
     const parents: string[] = []
@@ -27,11 +29,13 @@ const handleClickItem = () => {
 
         parent = parent?.parent
     }
+
     if (MenuInstance) {
         MenuInstance.handleMenuItemSelect(props.name)
         MenuInstance.handleSubMenuSelect(parents)
     }
 }
+
 onMounted(() => MenuInstance?.addMenuItem({ name: props.name, handleClick: handleUpdataActive }))
 </script>
 

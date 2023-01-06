@@ -7,8 +7,6 @@ export default function useMenu(props: { [key: string]: any }) {
     const instance = getCurrentInstance()
     const submenuList = reactive<MenuList[]>([])
     const menuItemList = reactive<MenuList[]>([])
-    const MenuInstance = inject<MenuInstance | null>('MenuInstance')
-
 
     return {
         active,
@@ -16,6 +14,5 @@ export default function useMenu(props: { [key: string]: any }) {
         instance,
         submenuList,
         menuItemList,
-        MenuInstance,
     }
 }

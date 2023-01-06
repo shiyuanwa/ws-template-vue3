@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang='ts' setup>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, inject } from "vue";
 import collapseTransition from "@/components/collapse-transition.vue";
 import useMenu from "./useMenu";
 const props = defineProps({
@@ -22,7 +22,8 @@ const props = defineProps({
     },
 })
 
-let { opened, MenuInstance, instance } = useMenu(props)
+let { opened, instance } = useMenu(props)
+const MenuInstance = inject<MenuInstance | null>('MenuInstance')
 
 const handleClick = (state: boolean) => {
     opened.value = state
@@ -42,6 +43,7 @@ const handleClickItem = () => {
 
         parent = parent?.parent
     }
+
     if (MenuInstance) MenuInstance.handleSubMenuSelect([props.name, ...parents])
 }
 
