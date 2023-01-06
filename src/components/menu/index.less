@@ -1,0 +1,33 @@
+.menu {
+    @apply text-gray-700 flex items-center gap-1 cursor-pointer select-none mr-4 px-3 rounded-r-3xl h-10;
+
+    &:hover {
+        @apply animate-pulse;
+    }
+
+    i {
+        @apply p-1;
+    }
+
+    >div {
+        @apply flex-1;
+    }
+}
+
+
+.sub-menu {
+    @apply justify-between menu;
+
+}
+
+.menu-item {
+    @apply menu;
+}
+
+.active {
+    @apply bg-gradient-to-r from-purple-300 to-purple-500 shadow text-white;
+}
+
+.open {
+    @apply bg-slate-900 bg-opacity-5;
+}

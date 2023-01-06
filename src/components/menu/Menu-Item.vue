@@ -41,24 +41,15 @@ onMounted(() => MenuInstance?.addMenuItem({ name: props.name, handleClick: handl
 
 <template>
     <li @click.stop="handleClickItem" class="menu-item" :class="{ active: active }">
-        <i class="scale-[70%]">
+        <i class="">
             <i-round />
         </i>
-        <slot></slot>
+        <div>
+            <slot></slot>
+        </div>
     </li>
 </template>
 
 <style lang='less' scoped>
-.menu-item {
-
-    @apply flex items-center cursor-pointer select-none;
-
-    i {
-        @apply p-1;
-    }
-}
-
-.active {
-    @apply bg-slate-500;
-}
+@import url(./index.less);
 </style>

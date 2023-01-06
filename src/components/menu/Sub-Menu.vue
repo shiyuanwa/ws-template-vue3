@@ -11,14 +11,13 @@ import useMenu from "./useMenu";
 const props = defineProps({
     icon: {
         type: String,
-        // required: true,
         default() {
             return 'i-round';
         }
     },
     name: {
-        required: true,
         type: String,
+        required: true,
     },
 })
 
@@ -50,21 +49,22 @@ const handleClickItem = () => {
 const getStyle = computed(() => opened.value ? 'transition-transform duration-300 transform rotate-90' : 'transition-transform duration-300 transform')
 const leftIcon = computed(() => props.icon ? props.icon : 'i-round')
 
-
 onMounted(() => MenuInstance?.addSubItem({ name: props.name, handleClick }))
 </script>
 
 
 <template>
     <li>
-        <div class="sub-menu" @click.stop="handleClickItem">
-            <i :class="leftIcon === 'i-round' && 'scale-[70%]'">
+        <div class="sub-menu" @click.stop="handleClickItem" :class="{open:opened}">
+            <i>
                 <component :is="leftIcon" />
             </i>
-            <slot name="title"></slot>
-            <div :class="getStyle">
-                <i-right />
+            <div>
+                <slot name="title"></slot>
             </div>
+            <span :class="getStyle">
+                <i-right />
+            </span>
         </div>
         <collapse-transition>
             <ul v-show="opened">
@@ -75,12 +75,5 @@ onMounted(() => MenuInstance?.addSubItem({ name: props.name, handleClick }))
 </template>
 
 <style lang='less' scoped>
-.sub-menu {
-    @apply flex items-center;
-
-    i {
-        @apply p-1;
-    }
-
-}
+@import url(./index.less);
 </style>
